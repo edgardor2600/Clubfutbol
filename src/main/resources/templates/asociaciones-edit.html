@@ -1,0 +1,167 @@
+<!DOCTYPE html>
+<html lang="es" xmlns:th="http://www.thymeleaf.org">
+
+<head>
+    <title>Formulario Edit Asociaciones</title>
+    <!-- Required meta tags -->
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <link rel="stylesheet" th:href="@{/Css/Styles.css}">
+    <link rel="shortcut icon" th:href="@{/img/iconp.png}" type="image/x-icon">
+    <link rel="stylesheet" th:href="@{https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css}" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://kit.fontawesome.com/a8699accd2.js" crossorigin="anonymous"></script>
+    <style>
+        body {
+            background-color: #f0f4f8; /* Fondo más suave */
+            color: #333; /* Texto gris oscuro para mayor legibilidad */
+            font-family: Arial, sans-serif;
+            min-height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            padding: 20px; /* Padding general para mejorar el espaciado */
+        }
+
+        .form-container {
+            background-color: #ffffff; /* Fondo blanco para el formulario */
+            border-radius: 12px; /* Bordes redondeados */
+            box-shadow: 0px 4px 20px rgba(0, 0, 0, 0.1); /* Sombra más suave */
+            padding: 30px; /* Padding interior del formulario */
+            max-width: 500px; /* Ancho máximo del formulario */
+            width: 100%; /* Ancho completo en dispositivos pequeños */
+            margin: auto; /* Centra el formulario horizontalmente */
+        }
+
+        h4 {
+            text-align: center; /* Centrar título */
+            margin-bottom: 20px; /* Espacio inferior del título */
+            color: #007bff; /* Color azul del título */
+        }
+
+        label {
+            font-weight: bold; /* Texto en negrita para las etiquetas */
+        }
+
+        .input-group {
+            margin-bottom: 20px; /* Espacio entre campos de entrada */
+        }
+
+        .input-group-prepend .input-group-text {
+            background-color: #007bff; /* Fondo azul para el icono */
+            color: white; /* Texto blanco para el icono */
+            border: none; /* Sin borde */
+        }
+
+        .input-group input {
+            border-radius: 0 8px 8px 0; /* Bordes redondeados solo a la derecha */
+        }
+
+        /* Botón guardar */
+        .button button {
+            background-color: #007bff; /* Azul */
+            border: none;
+            color: #fff; /* Texto blanco */
+            padding: 12px 24px;
+            text-align: center;
+            text-decoration: none;
+            display: inline-block;
+            font-size: 16px;
+            border-radius: 8px;
+            transition: background-color 0.3s; /* Transición suave para el hover */
+            cursor: pointer;
+            width: 100%; /* Botón ocupa todo el ancho del contenedor */
+        }
+
+        .button button:hover {
+            background-color: #0056b3; /* Azul más oscuro en hover */
+        }
+
+        .return {
+            text-align: center; /* Centrar el botón de regreso */
+            margin-bottom: 20px; /* Espacio inferior */
+        }
+
+        #error-messages {
+            display: none; /* Ocultar inicialmente */
+            margin-bottom: 20px; /* Espacio inferior del mensaje de error */
+            padding: 10px;
+            background-color: #ffe5e5; /* Fondo de error */
+            border: 1px solid #ff0000; /* Borde rojo */
+            color: #ff0000; /* Texto rojo */
+            border-radius: 5px; /* Bordes redondeados */
+        }
+
+        .form-group {
+            margin-bottom: 20px; /* Espacio entre grupos de formulario */
+        }
+
+        .label {
+            display: flex;
+            align-items: center; /* Centrar verticalmente los iconos y el texto */
+            margin-bottom: 5px; /* Espacio debajo de cada etiqueta */
+        }
+
+        .icon {
+            color: #007bff; /* Color azul para los iconos */
+            margin-right: 10px; /* Espacio a la derecha de los iconos */
+            font-size: 1.2rem; /* Tamaño del icono */
+        }
+    </style>
+</head>
+
+<body>
+<main>
+    <div class="form-container">
+        <div class="return">
+            <a class="font-sans bg-yellow-400 hover:bg-yellow-500 text-white font-bold py-2 px-4 rounded-full" style="text-decoration: none;" th:href="@{/asociaciones}">
+                <i class="fa-solid fa-circle-left" style="color: #000000;"></i>
+                Regresar
+            </a>
+        </div>
+        <h4>Actualizar Datos</h4>
+        <form th:action="@{/asociaciones/save/edit}" th:object="${asociaciones}" method="post" onsubmit="return validarEdad();">
+            <input type="hidden" th:field="*{id}">
+            <div class="form-group">
+                <label class="label">
+                    <i class="fa-solid fa-users icon"></i>
+                    Nombre:
+                </label>
+                <input type="text" th:field="*{nombre}" placeholder="Ingrese el nombre..." class="form-control" required>
+            </div>
+            <div class="form-group">
+                <label class="label">
+                    <i class="fa-solid fa-globe icon"></i>
+                    País:
+                </label>
+                <input type="text" th:field="*{pais}" placeholder="Ingrese el país..." class="form-control" required>
+            </div>
+            <div class="form-group">
+                <label class="label">
+                    <i class="fa-solid fa-user-tie icon"></i>
+                    Presidente:
+                </label>
+                <input type="text" th:field="*{presidente}" placeholder="Ingrese el presidente..." class="form-control" required>
+            </div>
+            <div class="form-group">
+                <label class="label">
+                    <i class="fa-solid fa-pencil-alt icon"></i>
+                    Siglas:
+                </label>
+                <input type="text" th:field="*{siglas}" placeholder="Ingrese las siglas..." class="form-control" required>
+            </div>
+            <div id="error-messages" th:if="${errorMessage}" th:text="${errorMessage}"></div>
+            <div class="button">
+                <button type="submit">Guardar</button>
+            </div>
+        </form>
+    </div>
+</main>
+<!-- Optional JavaScript -->
+<!-- jQuery first, then Popper.js, then Bootstrap JS -->
+<script th:src="@{https://code.jquery.com/jquery-3.3.1.slim.min.js}" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script>
+<script th:src="@{https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js}" integrity="sha384-UO2eT0CpHqdSJQ6hJty5KVphtPhzWj9WO1clHTMGa3JDZwrnQq4sF86dIHNDz0W1" crossorigin="anonymous"></script>
+<script th:src="@{https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js}" integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM" crossorigin="anonymous"></script>
+</body>
+
+</html>

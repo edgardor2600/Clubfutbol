@@ -1,0 +1,194 @@
+<!DOCTYPE html>
+<html lang="es" xmlns:th="http://www.thymeleaf.org">
+
+<head>
+    <title>Formulario Asociaciones</title>
+    <!-- Required meta tags -->
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <link rel="stylesheet" th:href="@{/Css/Styles.css}">
+    <link rel="shortcut icon" th:href="@{/img/logo-football-vector.jpg.png}" type="image/x-icon">
+    <!-- Bootstrap CSS -->
+    <link rel="stylesheet" th:href="@{https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css}" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://kit.fontawesome.com/a8699accd2.js" crossorigin="anonymous"></script>
+    <style>
+        body {
+            background-color: #f0f4f8;
+            color: #333;
+            font-family: Arial, sans-serif;
+            min-height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            margin: 0;
+            padding: 0;
+        }
+
+        .form-container {
+            background-color: #ffffff;
+            border-radius: 15px;
+            box-shadow: 0px 4px 20px rgba(0, 0, 0, 0.1);
+            padding: 30px;
+            max-width: 550px;
+            width: 100%;
+            margin: 20px;
+        }
+
+        h4 {
+            color: #007bff;
+            text-align: center;
+            margin-bottom: 20px;
+            font-size: 24px;
+            font-weight: bold;
+        }
+
+        .input-group {
+            position: relative;
+            margin-bottom: 15px;
+        }
+
+        label {
+            font-weight: bold;
+            font-size: 18px;
+            margin-bottom: 5px;
+            display: block;
+            color: #333;
+        }
+
+        input[type="text"] {
+            width: 100%;
+            padding: 10px 40px 10px 40px; /* Padding for the icon */
+            border: 2px solid #ddd;
+            border-radius: 5px;
+            font-size: 16px;
+            background-color: #f9fafb;
+        }
+
+        input[type="text"]:focus {
+            border-color: #007bff;
+            background-color: #ffffff;
+            outline: none;
+        }
+
+        .icon {
+            position: absolute;
+            left: 10px; /* Positioning of the icon */
+            top: 69%;
+            transform: translateY(-50%);
+            color: #007bff;
+            font-size: 18px;
+        }
+
+        .button button {
+            background-color: #007bff;
+            border: none;
+            color: white;
+            padding: 12px 24px;
+            text-align: center;
+            text-decoration: none;
+            display: inline-block;
+            font-size: 18px;
+            border-radius: 10px;
+            cursor: pointer;
+            transition: background-color 0.3s ease;
+            width: 100%;
+        }
+
+        .button button:hover {
+            background-color: #0056b3;
+        }
+
+        .fa-circle-left {
+            margin-right: 8px;
+        }
+
+        .return a {
+            display: inline-block;
+            background-color: #ffc107;
+            padding: 10px 20px;
+            color: #fff;
+            text-decoration: none;
+            border-radius: 50px;
+            font-size: 18px;
+            font-weight: bold;
+            text-align: center;
+        }
+
+        .return a:hover {
+            background-color: #e0a800;
+        }
+
+        .return i {
+            margin-right: 8px;
+        }
+
+        #error-messages {
+            background-color: #f8d7da;
+            border: 1px solid #f5c6cb;
+            color: #721c24;
+            padding: 10px;
+            border-radius: 5px;
+            display: none; /* Hide by default */
+        }
+    </style>
+</head>
+
+<body>
+    <main>
+        <div class="form-container">
+            <div class="return">
+                <a class="font-sans bg-yellow-400 hover:bg-yellow-500 text-white font-bold py-2 px-4 rounded-full" th:href="@{/asociaciones}">
+                    <i class="fa-solid fa-circle-left" style="color: #ffffff;"></i> Volver
+                </a>
+            </div>
+            <br>
+            <h4>Agregar Datos</h4>
+            <form th:action="@{/asociaciones/save}" th:object="${asociaciones}" method="post" onsubmit="return validarEdad();">
+                <input type="hidden" th:field="*{id}">
+                
+                <div class="input-group">
+                    <label for="name">Nombre Asociación:</label>
+                    <i class="fas fa-users icon"></i>
+                    <input type="text" id="name" th:field="*{nombre}" placeholder="Ingrese el nombre..." required>
+                </div>
+                
+                <div class="input-group">
+                    <label for="pais">País:</label>
+                    <i class="fas fa-globe icon"></i>
+                    <input type="text" id="pais" th:field="*{pais}" placeholder="Ingrese el país..." required>
+                </div>
+                
+                <div class="input-group">
+                    <label for="presidente">Presidente:</label>
+                    <i class="fas fa-user-tie icon"></i>
+                    <input type="text" id="presidente" th:field="*{presidente}" placeholder="Ingrese el presidente..." required>
+                </div>
+                
+                <div class="input-group">
+                    <label for="siglas">Siglas:</label>
+                    <i class="fas fa-font icon"></i>
+                    <input type="text" id="siglas" th:field="*{siglas}" placeholder="Ingrese las siglas..." required>
+                </div>
+                
+                <div id="error-messages" th:if="${errorMessage}" th:text="${errorMessage}"></div>
+                <br>
+                
+                <div class="button">
+                    <button type="submit">
+                        <i class="fa-solid fa-circle-check"></i> Agregar
+                    </button>
+                </div>
+            </form>
+        </div>
+    </main>
+
+    <!-- Optional JavaScript -->
+    <script th:src="@{https://code.jquery.com/jquery-3.3.1.slim.min.js}" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script>
+    <script th:src="@{https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js}" integrity="sha384-UO2eT0CpHqdSJQ6hJty5KVphtPhzWj9WO1clHTMGa3JDZwrnQq4sF86dIHNDz0W1" crossorigin="anonymous"></script>
+    <script th:src="@{https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js}" integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM" crossorigin="anonymous"></script>
+
+</body>
+
+</html>
+	

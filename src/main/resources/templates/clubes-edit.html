@@ -1,0 +1,197 @@
+<!DOCTYPE html>
+<html lang="es" xmlns:th="http://www.thymeleaf.org">
+
+<head>
+    <title>Formulario Edit Clubes</title>
+    <!-- Required meta tags -->
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <link rel="stylesheet" th:href="@{/Css/Styles.css}">
+    <link rel="shortcut icon" th:href="@{/img/iconp.png}" type="image/x-icon">
+    <!-- Bootstrap CSS -->
+    <link rel="stylesheet" th:href="@{https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css}" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://kit.fontawesome.com/a8699accd2.js" crossorigin="anonymous"></script>
+    <style>
+        body {
+            background-color: #f0f2f5; /* Fondo claro */
+            color: #333; /* Texto gris oscuro */
+            font-family: Arial, sans-serif;
+            min-height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+
+        .form-container {
+            background-color: #ffffff; /* Fondo blanco para el formulario */
+            border-radius: 10px; /* Bordes redondeados */
+            box-shadow: 0px 0px 20px rgba(0, 0, 0, 0.1); /* Sombra más pronunciada */
+            padding: 30px; /* Espacio interno más amplio */
+            max-width: 600px; /* Ancho máximo del formulario */
+            margin: auto; /* Centramos el formulario horizontalmente */
+            margin-top: 50px; /* Margen superior */
+            margin-bottom: 50px; /* Margen inferior */
+        }
+
+        h4 {
+            text-align: center; /* Centrar el título */
+            margin-bottom: 20px; /* Espacio inferior */
+        }
+
+        .form-group {
+            margin-bottom: 20px; /* Espacio inferior para grupos de formularios */
+        }
+
+        label {
+            font-size: 1.5em; /* Aumentar el tamaño de fuente de las etiquetas */
+            font-weight: bold; /* Hacer las etiquetas más destacadas */
+        }
+
+        input[type="text"],
+        select {
+            border: 2px solid #007bff; /* Bordes de entrada y selección azules */
+            border-radius: 8px; /* Bordes redondeados */
+            padding: 10px; /* Espaciado interno */
+            width: 100%; /* Ancho completo */
+            transition: border-color 0.3s; /* Transición suave para el borde */
+        }
+
+        input[type="text"]:focus,
+        select:focus {
+            border-color: #0056b3; /* Borde azul más oscuro al enfocar */
+            box-shadow: 0 0 5px rgba(0, 86, 179, 0.5); /* Sombra al enfocar */
+        }
+
+        .button {
+            text-align: center; /* Centrar el botón */
+            margin-top: 20px; /* Margen superior */
+        }
+
+        .button button {
+            background-color: #007bff; /* Azul del botón */
+            border: none;
+            color: #fff; /* Texto blanco */
+            padding: 12px 24px;
+            font-size: 1.2em; /* Tamaño de fuente del botón */
+            border-radius: 8px; /* Bordes redondeados */
+            transition-duration: 0.4s;
+            cursor: pointer;
+            width: 100%; /* Ancho completo */
+        }
+
+        .button button:hover {
+            background-color: #0056b3; /* Azul más oscuro al pasar el ratón */
+        }
+
+        #error-messages {
+            margin-bottom: 20px; /* Margen inferior para mensajes de error */
+        }
+
+        .icon {
+            font-size: 1.5em; /* Tamaño de los iconos */
+            margin-right: 13px; /* Espacio a la derecha del icono */
+            color: #007bff; /* Color azul para los iconos */
+        }
+
+        .return {
+            text-align: right; /* Alinear el botón de retorno a la derecha */
+        }
+    </style>
+</head>
+
+<body>
+    <main>
+        <div class="form-container">
+            <div class="return">
+                <a class="font-sans bg-yellow-400 hover:bg-yellow-500 text-white font-bold py-2 px-4 rounded-full" style="text-decoration: none;" th:href="@{/clubes}">
+                    <i class="fa-solid fa-circle-left icon"></i> Volver
+                </a>
+            </div>
+            <h4>Actualizar Datos</h4>
+            <form th:action="@{/clubes/save/edit}" th:object="${clubes}" method="post">
+                <input type="hidden" th:field="*{id}">
+                <div class="form-group">
+                    <label for="name">
+                        <i class="fa-solid fa-futbol icon"></i> Nombre Club:
+                    </label>
+                    <input type="text" id="name" th:field="*{nombre}" placeholder="Ingrese el nombre..." required>
+                </div>
+                <div class="form-group">
+                    <label for="jugadoresV">
+                        <i class="fa-solid fa-user-friends icon"></i> Jugadores Vinculados:
+                    </label>
+                    <select id="jugadoresV" name="jugadores" multiple="multiple" th:field="*{jugadores}">
+                        <option th:each="jugador : ${clubes.jugadores}"
+                                th:value="${jugador.id}"
+                                th:text="${jugador.nombre + ' --- ' + jugador.posicion}">
+                        </option>
+                    </select>
+                </div>
+
+                <div class="form-group">
+                    <label for="jugadores">
+                        <i class="fa-solid fa-user-check icon"></i> Jugadores Disponibles:
+                    </label>
+                    <select id="jugadores" name="jugadores" multiple="multiple" th:field="*{jugadores}">
+                        <option th:each="jugador : ${jugadoresDisponibles}"
+                                th:value="${jugador.id}"
+                                th:text="${jugador.nombre + ' --- ' + jugador.posicion}">
+                        </option>
+                    </select>
+                </div>
+
+                <div class="form-group">
+                    <label for="competiciones">
+                        <i class="fa-solid fa-trophy icon"></i> Competición:
+                    </label>
+                    <select id="competiciones" name="competiciones.id" multiple="multiple" th:field="*{competiciones}" required>
+                        <option th:each="competiciones: ${competicionesList}"
+                                th:value="${competiciones.id}"
+                                th:text="${competiciones.nombre}"></option>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label for="asociaciones">
+                        <i class="fa-solid fa-users-cog icon"></i> Asociación:
+                    </label>
+                    <select id="asociaciones" name="asociaciones.id" th:field="*{asociaciones}" required>
+                        <option value="">Selecciona una asociación</option>
+                        <option th:each="asociaciones: ${asociacionesList}"
+                                th:value="${asociaciones.id}"
+                                th:text="${asociaciones.nombre}"></option>
+                    </select>
+                </div>
+
+                <div class="form-group">
+                    <label for="entrenadores">
+                        <i class="fa-solid fa-chalkboard-teacher icon"></i> Entrenadores:
+                    </label>
+                    <select id="entrenadores" name="entrenadores.id" th:field="*{entrenadores}" required>
+                        <option value="">Selecciona un Entrenador</option>
+                        <option th:each="entrenadores: ${entrenadoresList}"
+                                th:value="${entrenadores.id}"
+                                th:text="${entrenadores.nombre}">
+                        </option>
+                    </select>
+                </div>
+
+                <div id="error-messages" th:classappend="${errorMessage} ? 'bg-red-100 border border-red-400 text-red-700 px-4 py-3 rounded relative' : ''" th:text="${errorMessage}">
+                </div>
+
+                <div class="button">
+                    <button type="submit">
+                        <strong class="text-white font-sans text-2xl">Guardar</strong>
+                    </button>
+                </div>
+            </form>
+        </div>
+    </main>
+    <!-- Optional JavaScript -->
+    <!-- jQuery first, then Popper.js, then Bootstrap JS -->
+    <script th:src="@{https://code.jquery.com/jquery-3.3.1.slim.min.js}" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi2j" crossorigin="anonymous"></script>
+    <script th:src="@{https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js}" integrity="sha384-JjSmVgyd0p3xDg2hQeY4YXyKz4O3WZVVOSssJY4gGe0b3A8AZQx1FjX3zL69urdi" crossorigin="anonymous"></script>
+    <script th:src="@{https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js}" integrity="sha384-vo8n0sK7t8z8a7aA9s71kcN8/R5KqTOiYg4Dk1f7ZgU2F/VZto9sdiDwKo2Pe3hm" crossorigin="anonymous"></script>
+</body>
+
+</html>

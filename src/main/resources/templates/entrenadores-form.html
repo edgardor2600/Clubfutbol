@@ -1,0 +1,131 @@
+<!DOCTYPE html>
+<html lang="es" xmlns:th="http://www.thymeleaf.org">
+
+<head>
+    <title>Formulario Entrenadores</title>
+    <!-- Required meta tags -->
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <link rel="stylesheet" th:href="@{/Css/Styles.css}">
+    <link rel="shortcut icon" th:href="@{/img/logo-football-vector.jpg}" type="image/x-icon">
+    <!-- Bootstrap CSS -->
+    <link rel="stylesheet" th:href="@{https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css}" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://kit.fontawesome.com/a8699accd2.js" crossorigin="anonymous">
+    </script>
+    <style>
+        body {
+            background-color: rgba(255, 255, 255, 0.9); /* Fondo blanco con transparencia */
+            color: #000; /* Texto negro */
+            font-family: Arial, sans-serif;
+            min-height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+
+        .form-container {
+            background-color: #f8f9fa; /* Color de fondo del contenedor */
+            border-radius: 10px; /* Bordes redondeados */
+            box-shadow: 0px 0px 15px rgba(0, 0, 0, 0.2); /* Sombra más pronunciada */
+            padding: 20px; /* Relleno dentro del contenedor */
+            max-width: 500px; /* Limitar el ancho del formulario */
+            margin: auto; /* Centrar el formulario horizontalmente */
+            margin-top: 50px; /* Margen superior */
+            margin-bottom: 50px; /* Margen inferior */
+        }
+
+        .icon {
+            color: #007bff; /* Color azul claro para los iconos */
+            margin-right: 10px; /* Espacio a la derecha de los iconos */
+        }
+
+        /* Estilo del botón agregar */
+		.button button {
+		            background-color: #007bff; /* Azul */
+		            border: none;
+		            color: #fff; /* Texto blanco */
+		            padding: 12px 24px;
+		            text-align: center;
+		            text-decoration: none;
+		            display: inline-block;
+		            font-size: 16px;
+		            border-radius: 8px;
+		            transition-duration: 0.4s;
+		            cursor: pointer;
+		        }
+
+        .button button:hover {
+            background-color: #0056b3; /* Azul más oscuro */
+        }
+
+        .label {
+            display: flex;
+            align-items: center; /* Centrar verticalmente los iconos y el texto */
+        }
+    </style>
+</head>
+
+<body>
+    <main><br><br>
+        <div class="form-container">
+            <div class="return">
+                <a class="font-sans bg-yellow-400 hover:bg-yellow-500 text-white font-bold py-2 px-4 rounded-full" style="text-decoration: none;" th:href="@{/entrenadores}">
+                    <i class="fa-solid fa-circle-left" style="color: #000000;"></i><br>
+                </a>
+            </div><br>
+            <h4>Ingresar Datos</h4>
+            <script th:src="@{/JS/App.js}"></script>
+            <div class="cont">
+                <form th:action="@{/entrenadores/save}" th:object="${entrenadores}" method="post" onsubmit="return validarEdad();">
+                    <input type="hidden" th:field="*{id}">
+                    
+                    <div class="nombre">
+                        <label for="name" class="font-sans text-2xl label">
+                            <i class="fas fa-user icon"></i>Nombre Entrenador:
+                        </label>
+                        <input type="text" id="name" th:field="*{nombre}" placeholder="Ingrese el nombre..." class="bg-gray-200 appearance-none border-2 border-gray-200 rounded w-full py-2 px-4 text-gray-700 leading-tight focus:outline-none focus:bg-white focus:border-purple-500" required>
+                    </div><br>
+
+                    <div class="apellido">
+                        <label for="apellido" class="font-sans text-2xl label">
+                            <i class="fas fa-user icon"></i>Apellido Entrenador:
+                        </label>
+                        <input type="text" id="apellido" th:field="*{apellido}" placeholder="Ingrese el apellido..." class="bg-gray-200 appearance-none border-2 border-gray-200 rounded w-full py-2 px-4 text-gray-700 leading-tight focus:outline-none focus:bg-white focus:border-purple-500" required>
+                    </div><br>
+
+                    <div class="edad">
+                        <label for="edad" class="font-sans text-2xl label">
+                            <i class="fas fa-calendar-alt icon"></i>Edad Entrenador:
+                        </label>
+                        <input type="text" id="edad" th:field="*{edad}" placeholder="Ingrese la edad..." class="bg-gray-200 appearance-none border-2 border-gray-200 rounded w-full py-2 px-4 text-gray-700 leading-tight focus:outline-none focus:bg-white focus:border-purple-500" required>
+                    </div><br>
+
+                    <div class="nacionalidad">
+                        <label for="nacionalidad" class="font-sans text-2xl label">
+                            <i class="fas fa-flag icon"></i>Nacionalidad Entrenador:
+                        </label>
+                        <input type="text" id="nacionalidad" th:field="*{nacionalidad}" placeholder="Ingrese la Nacionalidad ..." class="bg-gray-200 appearance-none border-2 border-gray-200 rounded w-full py-2 px-4 text-gray-700 leading-tight focus:outline-none focus:bg-white focus:border-purple-500" required>
+                    </div><br>
+
+                    <div id="error-messages" th:classappend="${errorMessage} ? 'bg-red-100 border border-red-400 text-red-700 px-4 py-3 rounded relative' : ''" th:text="${errorMessage}">
+                    </div><br>
+
+                    <div class="button">
+                        <button type="submit"> <strong class="font-sans text-2xl bg-blue-500 hover:bg-blue-700 font-bold py-2 px-4 my-10 rounded-full">Agregar</strong></button>
+                    </div>
+                </form>
+            </div>
+        </div><br><br>
+    </main>
+    <!-- Optional JavaScript -->
+    <!-- jQuery first, then Popper.js, then Bootstrap JS -->
+    <script th:src="@{https://code.jquery.com/jquery-3.3.1.slim.min.js}" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous">
+    </script>
+    <script th:src="@{https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js}" integrity="sha384-UO2eT0CpHqdSJQ6hJty5KVphtPhzWj9WO1clHTMGa3JDZwrnQq4sF86dIHNDz0W1" crossorigin="anonymous">
+    </script>
+    <script th:src="@{https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js}" integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM" crossorigin="anonymous">
+    </script>
+</body>
+
+</html>

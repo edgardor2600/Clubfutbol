@@ -1,0 +1,179 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+
+<head>
+    <title>Tabla Competiciones</title>
+    <!-- Required meta tags -->
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <link rel="stylesheet" th:href="@{/css/team_table.css}">
+    <link rel="shortcut icon" th:href="@{/img/iconp.png}" type="image/x-icon">
+    <!-- Bootstrap CSS -->
+    <link rel="stylesheet" th:href="@{https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css}" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://kit.fontawesome.com/a8699accd2.js" crossorigin="anonymous"></script>
+    <style>
+		body {
+		           background-color: #f0f4f8; /* Fondo suave */
+		           color: #333; /* Texto oscuro */
+		           margin: 0;
+		           padding: 0;
+		           font-family: Arial, sans-serif;
+		           min-height: 100vh;
+		       }
+
+		header {
+		            background-color: #ffffff; /* Fondo blanco */
+		            color: #000; /* Texto negro */
+		            padding: 20px 0;
+		            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1); /* Sombra suave en el encabezado */
+		        }
+
+		        .logo img {
+		            width: 100px;
+		        }
+
+		        .btn-custom {
+		            background-color: #007bff; /* Azul */
+		            border: none;
+		            color: #fff; /* Texto blanco */
+		            padding: 12px 24px;
+		            text-align: center;
+		            text-decoration: none;
+		            display: inline-block;
+		            font-size: 16px;
+		            border-radius: 8px;
+		            transition-duration: 0.4s;
+		            cursor: pointer;
+		        }
+
+        .btn-custom:hover {
+            background-color: #007c91; /* Azul más oscuro */
+        }
+
+		.table-container {
+		            background-color: rgba(255, 255, 255, 0.95); /* Fondo blanco ligeramente transparente */
+		            border-radius: 10px;
+		            padding: 20px;
+		            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2); /* Sombra más pronunciada */
+		            margin: 20px auto; /* Centrar horizontalmente */
+		            max-width: 1300px; /* Establecer un ancho máximo */
+		        }
+
+        .table-container table {
+            width: 100%;
+            margin: 20px 0; /* Espacio entre tabla y botones */
+        }
+
+		.table-container th {
+		            font-weight: bold;
+		            background-color: #007bff; /* Fondo azul para encabezados */
+		            color: #fff; /* Texto blanco para encabezados */
+		        }
+
+        .table-container td {
+            color: #000; /* Texto negro */
+        }
+
+        .table-container .fa-file-pen, 
+        .table-container .fa-trash {
+            font-size: 1.2em;
+        }
+
+        .table-container a:hover {
+            color: #f8ff09;
+        }
+
+        .btn-container {
+            display: flex;
+            align-items: center;
+            justify-content: flex-start;
+            padding-left: 20px;
+        }
+
+        .btn-container a {
+            margin-right: 10px;
+        }
+
+        .table-striped tbody tr:nth-of-type(odd) {
+            background-color: #e0f2f1; /* Fila impar en azul claro */
+        }
+
+        .table-striped tbody tr:nth-of-type(even) {
+            background-color: #ffffff; /* Fila par en blanco */
+        }
+
+        .fas {
+            font-size: 1.5em;
+            margin-right: 10px;
+        }
+
+    </style>
+</head>
+
+<body>
+    <header>
+        <div class="container-fluid">
+            <div class="row justify-content-between align-items-center">
+                <div class="col-auto logo">
+                    <a th:href="@{/}">
+                        <img th:src="@{/img/logo.png}" alt="">
+                    </a>
+                </div>
+            </div>
+        </div>
+    </header>
+    <main>
+        <div class="container">
+            <div class="row justify-content-center">
+                <div class="col-lg-10 table-container">
+                    <div class="btn-container">
+                        <a class="btn btn-custom" th:href="@{/index}">
+                            <i class="fas fa-home"></i> Inicio
+                        </a>
+                        <a th:href="@{/competiciones/new}" class="btn btn-custom">
+                            <i class="fas fa-plus"></i> Nueva Competición
+                        </a>
+                    </div>
+                    <table class="table table-striped">
+                        <thead>
+                            <tr>
+                                <th>Id</th>
+                                <th>Nombre</th>
+                                <th>Fecha Inicio</th>
+                                <th>Fecha Final</th>
+                                <th>Editar</th>
+                                <th>Eliminar</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr th:each="competiciones: ${competiciones}">
+                                <td th:text="${competiciones.id}"></td>
+                                <td th:text="${competiciones.nombre}"></td>
+                                <td th:text="${#dates.format(competiciones.fechaInicial, 'dd-MM-yyyy')}"></td>
+                                <td th:text="${#dates.format(competiciones.fechaFinal, 'dd-MM-yyyy')}"></td>
+                                <td>
+                                    <a class="text-warning" th:href="@{/competiciones/edit/{id}(id=${competiciones.id})}">
+                                        <i class="fa-solid fa-file-pen"></i>
+                                    </a>
+                                </td>
+                                <td>
+                                    <a class="text-danger" th:href="@{/competiciones/delete/{id}(id=${competiciones.id})}">
+                                        <i class="fa-solid fa-trash"></i>
+                                    </a>
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <!-- Optional JavaScript -->
+    <script th:src="@{https://code.jquery.com/jquery-3.3.1.slim.min.js}" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script>
+    <script th:src="@{https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js}" integrity="sha384-UO2eT0CpHqdSJQ6hJty5KVphtPhzWj9WO1clHTMGa3JDZwrnQq4sF86dIHNDz0W1" crossorigin="anonymous"></script>
+    <script th:src="@{https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js}" integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM" crossorigin="anonymous"></script>
+</body>
+
+</html>

@@ -1,0 +1,132 @@
+<!DOCTYPE html>
+<html lang="es" xmlns:th="http://www.thymeleaf.org">
+
+<head>
+    <title>Formulario Clubes</title>
+    <!-- Required meta tags -->
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <link rel="stylesheet" th:href="@{/Css/Styles.css}">
+    <link rel="shortcut icon" th:href="@{/img/iconp.png}" type="image/x-icon">
+    <!-- Bootstrap CSS -->
+    <link rel="stylesheet" th:href="@{https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css}" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://kit.fontawesome.com/a8699accd2.js" crossorigin="anonymous"></script>
+    <style>
+        body {
+            background-color: #fff; /* Fondo blanco */
+            color: #000; /* Texto negro */
+            font-family: Arial, sans-serif;
+            min-height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+
+        .form-container {
+            background-color: #f8f9fa; /* Background color for the container */
+            border-radius: 10px; /* Rounded corners */
+            box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.1); /* Shadow effect */
+            padding: 40px; /* Increased padding inside the container */
+            max-width: 600px; /* Increased form width */
+            margin: auto; /* Center the form horizontally */
+            margin-top: 50px; /* Add top margin */
+            margin-bottom: 50px; /* Add bottom margin */
+        }
+
+        /* Botón agregar */
+        .button button {
+            background-color: #007bff; /* Azul */
+            border: none;
+            color: #fff; /* Texto blanco */
+            padding: 12px 24px;
+            text-align: center;
+            text-decoration: none;
+            display: inline-block;
+            font-size: 18px; /* Increased font size */
+            border-radius: 8px;
+            transition-duration: 0.4s;
+            cursor: pointer;
+        }
+
+        .button button:hover {
+            background-color: #0056b3; /* Azul más oscuro */
+        }
+
+        .form-group label {
+            display: flex;
+            align-items: center; /* Center the icon and text */
+            margin-bottom: 10px; /* Space between label and input */
+        }
+
+        .form-group label i {
+            margin-right: 12px; /* Space between icon and text */
+            color: #007bff; /* Blue color for icons */
+        }
+    </style>
+</head>
+
+<body>
+    <main>
+        <br><br>
+        <br>
+        <div class="form-container">
+            <div class="return">
+                <a class="font-sans bg-yellow-400 hover:bg-yellow-500 text-white font-bold py-2 px-4 rounded-full" style="text-decoration: none;" th:href="@{/clubes}">
+                    <i class="fa-solid fa-circle-left" style="color: #000000;"></i><br>
+                </a>
+            </div><br>
+            <h4>Agregar Datos</h4>
+
+            <form th:action="@{/clubes/save}" th:object="${clubes}" method="post" onsubmit="return validarEdad();">
+                <input type="hidden" th:field="*{id}">
+                <div class="nombre">
+                    <label for="name" class="text-black font-sans text-2xl"><i class="fas fa-users" style="color: #007bff;"></i>Nombre Club:</label>
+                    <input type="text" id="name" th:field="*{nombre}" placeholder="Ingrese el nombre..." class="bg-gray-200 appearance-none border-2 border-gray-200 rounded w-full py-2 px-4 text-gray-700 leading-tight focus:outline-none focus:bg-white focus:border-purple-500" required>
+                </div>
+                <br>
+                <div class="form-group">
+                    <label for="jugadores" class="text-black font-sans text-2xl"><i class="fas fa-user-friends"></i>Jugadores:</label>
+                    <select id="jugadores" name="jugadores.id" class="form-control" multiple="multiple" th:field="*{jugadores}" required>
+                        <option th:each="jugadores: ${jugadoresList}" th:value="${jugadores.id}" th:text="${jugadores.nombre + ' --- ' + jugadores.posicion}"></option>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label for="competiciones" class="text-black font-sans text-2xl"><i class="fas fa-trophy"></i>Competición:</label>
+                    <select id="competiciones" name="competiciones.id" class="form-control" multiple="multiple" th:field="*{competiciones}" required>
+                        <option th:each="competiciones: ${competicionesList}" th:value="${competiciones.id}" th:text="${competiciones.nombre}"></option>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label for="asociaciones" class="text-black font-sans text-2xl"><i class="fas fa-building"></i>Asociación:</label>
+                    <select id="asociaciones" name="asociaciones.id" class="form-control" th:field="*{asociaciones}" required>
+                        <option value="">Selecciona una asociación</option>
+                        <option th:each="asociaciones: ${asociacionesList}" th:value="${asociaciones.id}" th:text="${asociaciones.nombre}"></option>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label for="entrenadores" class="text-black font-sans text-2xl"><i class="fas fa-user-tie"></i>Entrenadores:</label>
+                    <select id="entrenadores" name="entrenadores.id" class="form-control" th:field="*{entrenadores}" required>
+                        <option value="">Selecciona un Entrenador</option>
+                        <option th:each="entrenadores: ${entrenadoresList}" th:value="${entrenadores.id}" th:text="${entrenadores.nombre}"></option>
+                    </select>
+                </div>
+                <div id="error-messages" th:classappend="${errorMessage} ? 'bg-red-100 border border-red-400 text-red-700 px-4 py-3 rounded relative' : ''" th:text="${errorMessage}">
+                </div>
+                <br>
+                <div class="button">
+                    <button type="submit"><strong class="text-white font-sans text-2xl">Agregar</strong></button>
+                </div>
+            </form>
+        </div>
+        <br>
+        <br>
+    </main>
+    <!-- Optional JavaScript -->
+    <!-- jQuery first, then Popper.js, then Bootstrap JS -->
+    <script th:src="@{https://code.jquery.com/jquery-3.3.1.slim.min.js}" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script>
+    <script th:src="@{https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js}" integrity="sha384-UO2eT0CpHqdSJQ6hJty5KVphtPhzWj9WO1clHTMGa3JDZwrnQq4sF86dIHNDz0W1" crossorigin="anonymous"></script>
+    <script th:src="@{https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js}" integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM" crossorigin="anonymous"></script>
+</body>
+
+</html>
