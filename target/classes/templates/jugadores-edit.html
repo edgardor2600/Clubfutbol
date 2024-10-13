@@ -1,0 +1,155 @@
+<!DOCTYPE html>
+<html lang="es" xmlns:th="http://www.thymeleaf.org">
+
+<head>
+    <title>Formulario Edit jugadores</title>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <link rel="shortcut icon" th:href="@{/img/iconp.png}" type="image/x-icon">
+    <link rel="stylesheet" th:href="@{https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css}" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://kit.fontawesome.com/a8699accd2.js" crossorigin="anonymous"></script>
+    <style>
+        body {
+            background-color: #e9ecef; /* Fondo gris claro */
+            color: #333; /* Texto gris oscuro */
+            font-family: 'Roboto', sans-serif;
+            min-height: 100vh; /* Altura mínima */
+            display: flex;
+            flex-direction: column; /* Para que el footer esté al final */
+            justify-content: space-between; /* Espaciado entre contenido y footer */
+            padding: 20px; /* Añadir un poco de espacio alrededor */
+        }
+
+        .form-container {
+            background-color: #ffffff; /* Fondo blanco para el formulario */
+            border-radius: 15px; /* Esquinas redondeadas */
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1); /* Sombra suave */
+            padding: 40px; /* Relleno interno aumentado */
+            max-width: 800px; /* Ancho máximo del formulario aumentado */
+            margin: 20px auto; /* Margen centrado */
+            width: 100%; /* Asegurar que ocupe todo el ancho disponible */
+        }
+
+        h4 {
+            margin-bottom: 20px; /* Margen inferior */
+            text-align: center; /* Centrar título */
+            font-weight: bold; /* Negrita */
+            color: #007bff; /* Color azul */
+        }
+
+        label {
+            font-size: 1.1rem; /* Tamaño de fuente */
+            font-weight: bold; /* Negrita */
+        }
+
+        .form-control {
+            border-radius: 10px; /* Esquinas redondeadas para los campos */
+        }
+
+        .button button {
+            background-color: #007bff; /* Azul */
+            border: none;
+            color: #fff; /* Texto blanco */
+            padding: 12px 20px;
+            text-align: center;
+            text-decoration: none;
+            display: inline-block;
+            font-size: 16px;
+            border-radius: 8px;
+            transition: background-color 0.3s ease; /* Transición suave */
+            cursor: pointer;
+            width: 100%; /* Botón ocupa todo el ancho */
+        }
+
+        .button button:hover {
+            background-color: #0056b3; /* Azul más oscuro al pasar el mouse */
+        }
+
+        .return {
+            text-align: center; /* Centrar el enlace de regreso */
+            margin-bottom: 20px; /* Margen inferior */
+        }
+
+        .error-message {
+            background-color: #f8d7da; /* Fondo rojo claro */
+            color: #721c24; /* Texto rojo oscuro */
+            padding: 10px;
+            border-radius: 5px; /* Esquinas redondeadas */
+            margin-top: 20px; /* Margen superior */
+            text-align: center; /* Centrar mensaje */
+        }
+
+        .icon {
+            font-size: 1.5rem; /* Tamaño del icono */
+            margin-right: 10px; /* Espacio entre icono y texto */
+            color: #007bff; /* Color azul para los iconos */
+        }
+
+        
+    </style>
+</head>
+
+<body>
+    <main>
+        <div class="form-container">
+            <div class="return">
+                <a class="bg-yellow-400 hover:bg-yellow-500 text-white font-bold py-2 px-4 rounded-full" style="text-decoration: none;" th:href="@{/jugadores}">
+                    <i class="fa-solid fa-circle-left icon"></i> Volver
+                </a>
+            </div>
+            <h4>Actualizar Datos</h4>
+
+            <form th:action="@{/jugadores/save/edit}" th:object="${jugadores}" method="post" id="formu">
+                <input type="hidden" th:field="*{id}">
+                <div class="form-group">
+                    <label for="name">
+                        <i class="fa-solid fa-user icon"></i> Nombre Jugador:
+                    </label>
+                    <input type="text" id="name" th:field="*{nombre}" placeholder="Ingrese el nombre..." class="form-control" required>
+                </div>
+                <div class="form-group">
+                    <label for="apellido">
+                        <i class="fa-solid fa-user icon"></i> Apellido Jugador:
+                    </label>
+                    <input type="text" id="apellido" th:field="*{apellido}" placeholder="Ingrese el apellido..." class="form-control" required>
+                </div>
+                <div class="form-group">
+                    <label for="nro">
+                        <i class="fa-solid fa-list-number icon"></i> Número Jugador:
+                    </label>
+                    <input type="text" id="nro" th:field="*{numero}" placeholder="Ingrese el número..." class="form-control" required>
+                </div>
+                <div class="form-group">
+                    <label for="posicion">
+                        <i class="fa-solid fa-soccer-ball-o icon"></i> Posición Jugador:
+                    </label>
+                    <select id="posicion" th:field="*{posicion}" class="form-control" required>
+                        <option value="">Selecciona una posición</option>
+                        <option value="Portero">Portero</option>
+                        <option value="Defensor">Defensor</option>
+                        <option value="Centrocampista">Centrocampista</option>
+                        <option value="Delantero">Delantero</option>
+                    </select>
+                </div>
+
+                <div id="error-messages" th:classappend="${errorMessage} ? 'error-message' : ''" th:text="${errorMessage}"></div><br>
+
+                <div class="button text-center">
+                    <button type="submit">
+                        <strong>Guardar</strong>
+                    </button>
+                </div>
+            </form>
+        </div>
+    </main>
+
+  
+
+    <!-- Optional JavaScript -->
+    <script th:src="@{https://code.jquery.com/jquery-3.3.1.slim.min.js}" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script>
+    <script th:src="@{https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js}" integrity="sha384-UO2eT0CpHqdSJQ6hJty5KVphtPhzWj9WO1clHTMGa3JDZwrnQq4sF86dIHNDz0W1" crossorigin="anonymous"></script>
+    <script th:src="@{https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js}" integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM" crossorigin="anonymous"></script>
+</body>
+
+</html>
